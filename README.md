@@ -1,6 +1,8 @@
 # E-commerceManagementSystem
 
 ### 商品管理系统
+#### 1.菜单跳转
+#### 2.显示商品列表
 
 ### 分层思想
 
