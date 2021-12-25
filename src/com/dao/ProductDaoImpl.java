@@ -1,5 +1,6 @@
 package com.dao;
 
+import com.model.Page;
 import com.model.Product;
 import com.util.DBUtil;
 
@@ -13,7 +14,8 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public List<Product> list() {
-        String sql = "select * from products";
+        String sql = "select a.*,b.category_name, c.provider_name from products a, categories b, providers c where " +
+                "a.category_id = b.category_id and a.provider_id = c.provider_id";
         Object[] objects = {};
         List<Product> products = new ArrayList<>();
         try {
@@ -25,6 +27,8 @@ public class ProductDaoImpl implements ProductDao {
                 product.setPurchasePrice(rs.getDouble("purchase_price"));
                 product.setSalesPrice(rs.getDouble("sales_price"));
                 product.setQuantity(rs.getInt("quantity"));
+                product.setCategoryName(rs.getString("category_name"));
+                product.setProviderName(rs.getString("provider_name"));
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -33,5 +37,47 @@ public class ProductDaoImpl implements ProductDao {
             dbUtil.closeAll();
         }
         return products;
+    }
+
+    @Override
+    public List<Product> list(Page page) {
+        String sql = "select a.*,b.category_name, c.provider_name from products a, categories b, providers c where " +
+                "a.category_id = b.category_id and a.provider_id = c.provider_id limit ?,?";
+        Object[] objects = {(page.getPageNum() - 1) * page.getSize(), page.getSize()};
+        List<Product> products = new ArrayList<>();
+        try {
+            ResultSet rs = dbUtil.executeQuery(sql, objects);
+            while (rs.next()) {
+                Product product = new Product();
+                product.setProductId(rs.getInt("product_id"));
+                product.setProductName(rs.getString("product_name"));
+                product.setPurchasePrice(rs.getDouble("purchase_price"));
+                product.setSalesPrice(rs.getDouble("sales_price"));
+                product.setQuantity(rs.getInt("quantity"));
+                product.setCategoryName(rs.getString("category_name"));
+                product.setProviderName(rs.getString("provider_name"));
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbUtil.closeAll();
+        }
+        return products;
+    }
+
+    @Override
+    public int delete(Product product) {
+        int result = 0;
+        String sql = "delete from products where product_id=?";
+        Object[] objects = {product.getProductId()};
+        try {
+            result = dbUtil.executeUpdate(sql, objects);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            dbUtil.closeAll();
+        }
+        return result;
     }
 }

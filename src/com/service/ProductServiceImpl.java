@@ -13,4 +13,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> list() {
         return productDao.list();
     }
+
+    @Override
+    public int delete(Product product) {
+        return productDao.delete(product);
+    }
 }
