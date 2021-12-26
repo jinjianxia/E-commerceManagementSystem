@@ -10,40 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
-    private DBUtil dbUtil = new DBUtil();
+    private final DBUtil dbUtil = new DBUtil();
 
     @Override
     public List<Product> list() {
-        String sql = "select a.*,b.category_name, c.provider_name from products a, categories b, providers c where " +
-                "a.category_id = b.category_id and a.provider_id = c.provider_id";
+        String sql = "select a.*,b.category_name, c.provider_name from products a, categories b, providers c where a.category_id = b.category_id and a.provider_id = c.provider_id";
         Object[] objects = {};
-        List<Product> products = new ArrayList<>();
-        try {
-            ResultSet rs = dbUtil.executeQuery(sql, objects);
-            while (rs.next()) {
-                Product product = new Product();
-                product.setProductId(rs.getInt("product_id"));
-                product.setProductName(rs.getString("product_name"));
-                product.setPurchasePrice(rs.getDouble("purchase_price"));
-                product.setSalesPrice(rs.getDouble("sales_price"));
-                product.setQuantity(rs.getInt("quantity"));
-                product.setCategoryName(rs.getString("category_name"));
-                product.setProviderName(rs.getString("provider_name"));
-                products.add(product);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            dbUtil.closeAll();
-        }
-        return products;
+        return getProducts(sql, objects);
     }
 
     @Override
     public List<Product> list(Page page) {
-        String sql = "select a.*,b.category_name, c.provider_name from products a, categories b, providers c where " +
-                "a.category_id = b.category_id and a.provider_id = c.provider_id limit ?,?";
+        String sql = "select a.*,b.category_name, c.provider_name from products a, categories b, providers c where a.category_id = b.category_id and a.provider_id = c.provider_id limit ?,?";
         Object[] objects = {(page.getPageNum() - 1) * page.getSize(), page.getSize()};
+        return getProducts(sql, objects);
+    }
+
+    private List<Product> getProducts(String sql, Object[] objects) {
         List<Product> products = new ArrayList<>();
         try {
             ResultSet rs = dbUtil.executeQuery(sql, objects);
@@ -79,5 +62,22 @@ public class ProductDaoImpl implements ProductDao {
             dbUtil.closeAll();
         }
         return result;
+    }
+
+    @Override
+    public int getTotal() {
+        int total = 0;
+        String sql = "select count(*) as total from products a, categories b, providers c where a.category_id = b.category_id and a.provider_id = c.provider_id";
+        Object[] objects = {};
+        ResultSet rs = dbUtil.executeQuery(sql, objects);
+        try {
+            rs.next();
+            total = rs.getInt("total");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbUtil.closeAll();
+        }
+        return total;
     }
 }

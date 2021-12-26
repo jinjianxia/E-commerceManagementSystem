@@ -2,12 +2,13 @@ package com.service;
 
 import com.dao.ProductDao;
 import com.dao.ProductDaoImpl;
+import com.model.Page;
 import com.model.Product;
 
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-    private ProductDao productDao = new ProductDaoImpl();
+    private final ProductDao productDao = new ProductDaoImpl();
 
     @Override
     public List<Product> list() {
@@ -15,7 +16,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> list(Page page) {
+        return productDao.list(page);
+    }
+
+    @Override
     public int delete(Product product) {
         return productDao.delete(product);
+    }
+
+    @Override
+    public int getTotal() {
+        return productDao.getTotal();
     }
 }
