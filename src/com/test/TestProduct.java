@@ -16,7 +16,7 @@ public class TestProduct {
 //        测试dao
         ProductDao productDao = new ProductDaoImpl();
 //        List<Product> products = productDao.list();
-        List<Product> products = productDao.list(new Page(2,2));
+        List<Product> products = productDao.list(new Page(2, 2));
         for (Product product : products) {
             System.out.println(product);
         }

@@ -59,7 +59,6 @@ public class DBUtil {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         try {
             if (preparedStatement != null) {
                 preparedStatement.close();

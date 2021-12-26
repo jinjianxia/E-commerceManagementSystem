@@ -15,10 +15,10 @@ public class ConfigManager {
                 getResourceAsStream(configFile);
         try {
             properties.load(in);
-			if (in != null) {
-				in.close();
-			}
-		} catch (IOException e) {
+            if (in != null) {
+                in.close();
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
