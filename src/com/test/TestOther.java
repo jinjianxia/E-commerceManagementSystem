@@ -1,10 +1,7 @@
 package com.test;
 
-import com.dao.CategoryDao;
-import com.dao.CategoryDaoImpl;
 import com.dao.ProviderDao;
-import com.dao.ProviderDapImpl;
-import com.model.Category;
+import com.dao.impl.ProviderDapImpl;
 import com.model.Page;
 import com.model.Provider;
 

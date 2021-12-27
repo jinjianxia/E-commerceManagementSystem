@@ -15,4 +15,6 @@ public interface ProductDao {
     int getTotal();
 
     int addProduct(Product product);
+
+    int updateProduct(Product product);
 }

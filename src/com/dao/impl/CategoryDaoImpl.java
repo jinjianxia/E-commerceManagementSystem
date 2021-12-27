@@ -1,5 +1,6 @@
-package com.dao;
+package com.dao.impl;
 
+import com.dao.CategoryDao;
 import com.model.Category;
 import com.model.Page;
 import com.util.DBUtil;

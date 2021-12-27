@@ -1,9 +1,10 @@
-package com.service;
+package com.service.impl;
 
 import com.dao.ProductDao;
-import com.dao.ProductDaoImpl;
+import com.dao.impl.ProductDaoImpl;
 import com.model.Page;
 import com.model.Product;
+import com.service.ProductService;
 
 import java.util.List;
 
@@ -33,5 +34,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int addProduct(Product product) {
         return productDao.addProduct(product);
+    }
+
+    @Override
+    public int updateProduct(Product product) {
+        return productDao.updateProduct(product);
     }
 }

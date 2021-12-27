@@ -5,8 +5,10 @@ import com.model.Page;
 import com.model.Product;
 import com.model.Provider;
 import com.service.*;
+import com.service.impl.CategoryServiceImpl;
+import com.service.impl.ProductServiceImpl;
+import com.service.impl.ProviderServiceImpl;
 
-import javax.xml.crypto.Data;
 import java.util.*;
 
 public class ProductSys {
@@ -46,16 +48,19 @@ public class ProductSys {
     }
 
     private static void productMenu() {
-        boolean flag = true;
-        while (flag) {
+        boolean productFlag = true;
+        while (productFlag) {
             System.out.println("1.列表查询 2.新增 3.修改 4.删除 5.回到一级菜单");
             System.out.print("请选择商品管理菜单编号：");
             int menuId = input.nextInt();
             switch (menuId) {
-                case 1:
+                // 1.列表查询
+                case 1: {
                     showProductList();
                     break;
-                case 2:
+                }
+                // 2.增加
+                case 2: {
                     System.out.print("请输入商品：");
                     String productName = input.next();
                     System.out.print("请输入数量：");
@@ -66,34 +71,102 @@ public class ProductSys {
                     double salesPrice = input.nextDouble();
                     List<Category> categories = categoryService.list();
                     for (Category category : categories) {
-                        System.out.printf("%d.%s ", category.getCategoryId(), category.getCategoryName());
+                        System.out.printf("%d.%s ",
+                                category.getCategoryId(),
+                                category.getCategoryName());
                     }
                     System.out.println("请输入分类的编号：");
                     int categoryId = input.nextInt();
                     List<Provider> providers = providerService.list();
                     for (Provider provider : providers) {
-                        System.out.printf("%d.%s ", provider.getProviderId(), provider.getProviderName());
+                        System.out.printf("%d.%s ",
+                                provider.getProviderId(),
+                                provider.getProviderName());
                     }
                     System.out.println("请输入供应商编号：");
                     int providerId = input.nextInt();
-                    int res = productService.addProduct(new Product(productName, categoryId, providerId, purchasePrice, salesPrice, quantity));
+                    int res = productService.addProduct(new Product(productName,
+                            categoryId,
+                            providerId,
+                            purchasePrice,
+                            salesPrice,
+                            quantity));
                     System.out.println("res = " + res);
                     break;
-                case 3:
-                    System.out.println("修改");
-                    break;
-                case 4:
-//                    System.out.println("删除");
-                    System.out.println("请输入商品编号：");
+                }
+                // 3.修改
+                case 3: {
+                    products = productService.list();
+                    System.out.println("请输入修改的商品的编号：");
                     int productId = input.nextInt();
-                    boolean flag2 = false;
+                    Product oldProduct = new Product();
+                    boolean flag = false;
                     for (Product product : products) {
                         if (product.getProductId() == productId) {
-                            flag2 = true;
+                            flag = true;
+                            oldProduct = product;
                             break;
                         }
                     }
-                    if (!flag2) {
+                    if (!flag) {
+                        System.out.println("商品编号不存在");
+                    } else {
+                        System.out.printf("商品名称：%s 数量：%d 采购价：%.2f 销售价：%.2f\n",
+                                oldProduct.getProductName(),
+                                oldProduct.getQuantity(),
+                                oldProduct.getPurchasePrice(),
+                                oldProduct.getSalesPrice());
+                        System.out.print("请输入商品：");
+                        String productName = input.next();
+                        System.out.print("请输入数量：");
+                        int quantity = input.nextInt();
+                        System.out.print("请输入采购价：");
+                        double purchasePrice = input.nextDouble();
+                        System.out.print("请输入销售价：");
+                        double salesPrice = input.nextDouble();
+                        List<Category> categories = categoryService.list();
+                        for (Category category : categories) {
+                            System.out.printf("%d.%s ",
+                                    category.getCategoryId(),
+                                    category.getCategoryName());
+                        }
+                        System.out.println("请输入分类的编号：");
+                        int categoryId = input.nextInt();
+                        List<Provider> providers = providerService.list();
+                        for (Provider provider : providers) {
+                            System.out.printf("%d.%s ",
+                                    provider.getProviderId(),
+                                    provider.getProviderName());
+                        }
+                        System.out.println("请输入供应商编号：");
+                        int providerId = input.nextInt();
+                        Product newProduct = new Product(productName,
+                                categoryId,
+                                providerId,
+                                purchasePrice,
+                                salesPrice,
+                                quantity);
+                        newProduct.setProductId(oldProduct.getProductId());
+                        int result = productService.updateProduct(newProduct);
+                        if (result > 0) {
+                            System.out.println("商品新增完成。");
+                        }
+                    }
+                    break;
+                }
+                // 4.删除
+                case 4: {
+//                    System.out.println("删除");
+                    System.out.println("请输入商品编号：");
+                    int productId = input.nextInt();
+                    boolean flag = false;
+                    for (Product product : products) {
+                        if (product.getProductId() == productId) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag) {
                         System.out.println("商品编号不存在");
                     } else {
                         System.out.println("是否删除 y/n");
@@ -105,10 +178,12 @@ public class ProductSys {
                         }
                     }
                     break;
-                case 5:
-                    flag = false;
+                }
+                case 5: {
+                    productFlag = false;
                     System.out.println("回到一级菜单");
                     break;
+                }
                 default:
                     System.out.println("菜单编号不存在");
                     break;

@@ -1,14 +1,9 @@
 package com.test;
 
-import com.dao.ProductDao;
-import com.dao.ProductDaoImpl;
 import com.model.Page;
-import com.model.Product;
 import com.model.Provider;
-import com.service.ProductService;
-import com.service.ProductServiceImpl;
 import com.service.ProviderService;
-import com.service.ProviderServiceImpl;
+import com.service.impl.ProviderServiceImpl;
 
 import java.util.List;
 

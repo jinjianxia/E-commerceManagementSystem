@@ -1,5 +1,6 @@
-package com.dao;
+package com.dao.impl;
 
+import com.dao.ProductDao;
 import com.model.Page;
 import com.model.Product;
 import com.util.DBUtil;
@@ -87,6 +88,21 @@ public class ProductDaoImpl implements ProductDao {
         int result = 0;
         String sql = "insert into products (product_name, category_id, provider_id, quantity, purchase_price, sales_price, created_time) values (?, ?, ?, ?, ?, ?, ?)";
         Object[] objects = {product.getProductName(), product.getCategoryId(), product.getProviderId(), product.getQuantity(), product.getPurchasePrice(), product.getSalesPrice(), new Date()};
+        try {
+            result = dbUtil.executeUpdate(sql, objects);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            dbUtil.closeAll();
+        }
+        return result;
+    }
+
+    @Override
+    public int updateProduct(Product product) {
+        int result = 0;
+        String sql = "update products set product_name = ?, quantity = ?, purchase_price = ?, sales_price = ?, category_id = ?, provider_id = ? where product_id = ?";
+        Object[] objects = {product.getProductName(), product.getQuantity(), product.getPurchasePrice(), product.getSalesPrice(), product.getCategoryId(), product.getProviderId(), product.getProductId()};
         try {
             result = dbUtil.executeUpdate(sql, objects);
         } catch (Exception e) {

@@ -1,5 +1,6 @@
-package com.dao;
+package com.dao.impl;
 
+import com.dao.ProviderDao;
 import com.model.Provider;
 
 import java.util.List;

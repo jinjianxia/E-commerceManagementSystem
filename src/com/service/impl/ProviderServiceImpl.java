@@ -1,9 +1,10 @@
-package com.service;
+package com.service.impl;
 
 import com.dao.ProviderDao;
-import com.dao.ProviderDapImpl;
+import com.dao.impl.ProviderDapImpl;
 import com.model.Page;
 import com.model.Provider;
+import com.service.ProviderService;
 
 import java.util.List;
 

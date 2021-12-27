@@ -1,9 +1,10 @@
-package com.service;
+package com.service.impl;
 
 import com.dao.CategoryDao;
-import com.dao.CategoryDaoImpl;
+import com.dao.impl.CategoryDaoImpl;
 import com.model.Category;
 import com.model.Page;
+import com.service.CategoryService;
 
 import java.util.List;
 
