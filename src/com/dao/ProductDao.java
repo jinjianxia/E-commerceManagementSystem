@@ -11,5 +11,8 @@ public interface ProductDao {
     List<Product> list(Page page);
 
     int delete(Product product);
+
     int getTotal();
+
+    int addProduct(Product product);
 }

@@ -13,4 +13,6 @@ public interface ProductService {
     int delete(Product product);
 
     int getTotal();
+
+    int addProduct(Product product);
 }

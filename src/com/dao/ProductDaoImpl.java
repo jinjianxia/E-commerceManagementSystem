@@ -7,6 +7,7 @@ import com.util.DBUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
@@ -79,5 +80,20 @@ public class ProductDaoImpl implements ProductDao {
             dbUtil.closeAll();
         }
         return total;
+    }
+
+    @Override
+    public int addProduct(Product product) {
+        int result = 0;
+        String sql = "insert into products (product_name, category_id, provider_id, quantity, purchase_price, sales_price, created_time) values (?, ?, ?, ?, ?, ?, ?)";
+        Object[] objects = {product.getProductName(), product.getCategoryId(), product.getProviderId(), product.getQuantity(), product.getPurchasePrice(), product.getSalesPrice(), new Date()};
+        try {
+            result = dbUtil.executeUpdate(sql, objects);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            dbUtil.closeAll();
+        }
+        return result;
     }
 }

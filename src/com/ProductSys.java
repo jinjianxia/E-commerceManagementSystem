@@ -1,18 +1,19 @@
 package com;
 
+import com.model.Category;
 import com.model.Page;
 import com.model.Product;
-import com.service.ProductService;
-import com.service.ProductServiceImpl;
+import com.model.Provider;
+import com.service.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import javax.xml.crypto.Data;
+import java.util.*;
 
 public class ProductSys {
     private static final Scanner input = new Scanner(System.in);
     private static final ProductService productService = new ProductServiceImpl();
+    private static final CategoryService categoryService = new CategoryServiceImpl();
+    private static final ProviderService providerService = new ProviderServiceImpl();
     private static List<Product> products = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -48,21 +49,41 @@ public class ProductSys {
         boolean flag = true;
         while (flag) {
             System.out.println("1.列表查询 2.新增 3.修改 4.删除 5.回到一级菜单");
-            System.out.println("请选择商品管理菜单编号：");
+            System.out.print("请选择商品管理菜单编号：");
             int menuId = input.nextInt();
             switch (menuId) {
                 case 1:
                     showProductList();
                     break;
                 case 2:
-                    System.out.println("新增");
+                    System.out.print("请输入商品：");
+                    String productName = input.next();
+                    System.out.print("请输入数量：");
+                    int quantity = input.nextInt();
+                    System.out.print("请输入采购价：");
+                    double purchasePrice = input.nextDouble();
+                    System.out.print("请输入销售价：");
+                    double salesPrice = input.nextDouble();
+                    List<Category> categories = categoryService.list();
+                    for (Category category : categories) {
+                        System.out.printf("%d.%s ", category.getCategoryId(), category.getCategoryName());
+                    }
+                    System.out.println("请输入分类的编号：");
+                    int categoryId = input.nextInt();
+                    List<Provider> providers = providerService.list();
+                    for (Provider provider : providers) {
+                        System.out.printf("%d.%s ", provider.getProviderId(), provider.getProviderName());
+                    }
+                    System.out.println("请输入供应商编号：");
+                    int providerId = input.nextInt();
+                    int res = productService.addProduct(new Product(productName, categoryId, providerId, purchasePrice, salesPrice, quantity));
+                    System.out.println("res = " + res);
                     break;
                 case 3:
                     System.out.println("修改");
                     break;
                 case 4:
 //                    System.out.println("删除");
-//                    showProductList();
                     System.out.println("请输入商品编号：");
                     int productId = input.nextInt();
                     boolean flag2 = false;
@@ -114,7 +135,7 @@ public class ProductSys {
             }
             System.out.println("1.首页 2.上一页 3.下一页 4.尾页 5.回到上级菜单");
             System.out.printf("总条数：%d 总页数：%d%n", rowCount, pageCount);
-            System.out.println("请选择分页菜单编号：");
+            System.out.print("请选择分页菜单编号：");
             int menuId = input.nextInt();
             switch (menuId) {
                 case 1:

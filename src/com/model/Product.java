@@ -30,6 +30,15 @@ public class Product {
                 '}';
     }
 
+    public Product(String productName, Integer categoryId, Integer providerId, Double purchasePrice, Double salesPrice, Integer quantity) {
+        this.productName = productName;
+        this.categoryId = categoryId;
+        this.providerId = providerId;
+        this.purchasePrice = purchasePrice;
+        this.salesPrice = salesPrice;
+        this.quantity = quantity;
+    }
+
     public String getProviderName() {
         return providerName;
     }
