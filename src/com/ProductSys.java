@@ -1,10 +1,8 @@
 package com;
 
-import com.model.Category;
-import com.model.Page;
-import com.model.Product;
-import com.model.Provider;
+import com.model.*;
 import com.service.*;
+import com.service.impl.AdminServiceImpl;
 import com.service.impl.CategoryServiceImpl;
 import com.service.impl.ProductServiceImpl;
 import com.service.impl.ProviderServiceImpl;
@@ -16,10 +14,50 @@ public class ProductSys {
     private static final ProductService productService = new ProductServiceImpl();
     private static final CategoryService categoryService = new CategoryServiceImpl();
     private static final ProviderService providerService = new ProviderServiceImpl();
+    private static final AdminService adinService = new AdminServiceImpl();
     private static List<Product> products = new ArrayList<>();
 
     public static void main(String[] args) {
-        System.out.println("欢迎进入商品管理系统");
+        System.out.println("欢迎访问商品管理系统");
+        boolean flagLogin = true;
+        while (flagLogin) {
+            System.out.println("1.登录 2.注册 3.退出");
+            System.out.println("请选择菜单编号：");
+            int menuId = input.nextInt();
+            switch (menuId) {
+                case 1: {
+                    System.out.print("请输入账号：");
+                    String adminName = input.next();
+                    System.out.print("请输入密码：");
+                    String adminPassword = input.next();
+                    boolean result = adinService.login(new Admin(adminName, adminPassword));
+                    if (result) {
+                        System.out.println("经过登录验证通过了…");
+                        flagLogin = false;
+                    } else {
+                        System.out.println("登录失败，用户名或密码错误");
+                    }
+                    break;
+                }
+                case 2: {
+                    System.out.print("请输入新账号：");
+                    String adminName = input.next();
+                    System.out.print("请输入新密码：");
+                    String adminPassword = input.next();
+                    int result = adinService.register(new Admin(adminName, adminPassword));
+                    if (result != 0)
+                        System.out.println("注册成功");
+                    break;
+                }
+                case 3:
+                    System.out.println("系统已退出，谢谢使用！");
+                    return;
+//                    break;
+                default:
+                    System.out.println("菜单编号不存在");
+                    break;
+            }
+        }
         boolean flag = true;
         while (flag) {
             System.out.println("1.商品管理 2.分类管理 3.供应商管理 4.退出");
@@ -38,7 +76,8 @@ public class ProductSys {
                 case 4:
                     flag = false;
                     System.out.println("退出");
-                    break;
+                    return;
+//                    break;
                 default:
                     System.out.println("菜单编号不存在");
                     break;
