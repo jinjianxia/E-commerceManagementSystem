@@ -8,6 +8,10 @@ public class Admin {
     private String adminPassword;
     private Date date;
 
+    public Admin(String adminName) {
+        this.adminName = adminName;
+    }
+
     public Integer getAdminId() {
         return adminId;
     }

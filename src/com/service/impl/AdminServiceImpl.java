@@ -17,4 +17,9 @@ public class AdminServiceImpl implements AdminService {
     public boolean login(Admin admin) {
         return adminDao.login(admin);
     }
+
+    @Override
+    public boolean checkDuplicateName(Admin admin) {
+        return adminDao.checkDuplicateName(admin);
+    }
 }

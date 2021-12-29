@@ -7,6 +7,8 @@ import com.dao.impl.ProviderDapImpl;
 import com.model.Admin;
 import com.model.Page;
 import com.model.Provider;
+import com.service.AdminService;
+import com.service.impl.AdminServiceImpl;
 
 import java.util.List;
 
@@ -23,8 +25,10 @@ public class TestOther {
 //        for (Provider provider : providers) {
 //            System.out.println(provider.getProviderName());
 //        }
-        AdminDao adminDao = new AdminDaoImpl();
+//        AdminDao adminDao = new AdminDaoImpl();
 //        System.out.println(adminDao.register(new Admin("name", "password")));
-        System.out.println(adminDao.login(new Admin("name","password")));
+//        System.out.println(adminDao.login(new Admin("name","password")));
+        AdminService adminService = new AdminServiceImpl();
+        System.out.println(adminService.checkDuplicateName(new Admin("jjx1")));
     }
 }

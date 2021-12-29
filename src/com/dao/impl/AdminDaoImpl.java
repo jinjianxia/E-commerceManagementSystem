@@ -42,4 +42,20 @@ public class AdminDaoImpl implements AdminDao {
         }
         return result;
     }
+
+    @Override
+    public boolean checkDuplicateName(Admin admin) {
+        boolean result = false;
+        String sql = "select * from admin where admin_name = ?";
+        Object[] objects = {admin.getAdminName()};
+        try {
+            ResultSet rs = dbUtil.executeQuery(sql, objects);
+            if (rs.next()) {
+                result = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
