@@ -20,4 +20,24 @@ public class ProviderServiceImpl implements ProviderService {
     public List<Provider> list(Page page) {
         return providerDao.list(page);
     }
+
+    @Override
+    public int delete(Provider provider) {
+        return providerDao.delete(provider);
+    }
+
+    @Override
+    public int getTotal() {
+        return providerDao.getTotal();
+    }
+
+    @Override
+    public int addProvider(Provider provider) {
+        return providerDao.addProvider(provider);
+    }
+
+    @Override
+    public int updateProvider(Provider provider) {
+        return providerDao.updateProvider(provider);
+    }
 }

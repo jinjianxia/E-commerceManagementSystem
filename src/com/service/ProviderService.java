@@ -9,4 +9,12 @@ public interface ProviderService {
     List<Provider> list();
 
     List<Provider> list(Page page);
+
+    int delete(Provider provider);
+
+    int getTotal();
+
+    int addProvider(Provider provider);
+
+    int updateProvider(Provider provider);
 }

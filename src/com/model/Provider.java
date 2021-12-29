@@ -6,6 +6,28 @@ public class Provider {
     private String providerTel;
     private String providerAccount;
     private String providerEmail;
+    private String providerAddress;
+
+    public Provider(String providerName, String providerTel, String providerAccount, String providerEmail, String providerAddress) {
+        this.providerName = providerName;
+        this.providerTel = providerTel;
+        this.providerAccount = providerAccount;
+        this.providerEmail = providerEmail;
+        this.providerAddress = providerAddress;
+    }
+
+    public Provider() {
+
+    }
+
+    public String getProviderAddress() {
+        return providerAddress;
+    }
+
+    public Provider setProviderAddress(String providerAddress) {
+        this.providerAddress = providerAddress;
+        return this;
+    }
 
     public Integer getProviderId() {
         return providerId;

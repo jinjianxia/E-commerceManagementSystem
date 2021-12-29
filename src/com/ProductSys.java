@@ -17,11 +17,11 @@ public class ProductSys {
     private static final AdminService adinService = new AdminServiceImpl();
     private static List<Product> products = new ArrayList<>();
     private static List<Category> categories = new ArrayList<>();
+    private static List<Provider> providers = new ArrayList<>();
 
     public static void main(String[] args) {
         System.out.println("欢迎访问商品管理系统");
-        // todo 暂时关闭登录系统
-        boolean flagLogin = false;
+        boolean flagLogin = true;
         while (flagLogin) {
             System.out.println("1.登录 2.注册 3.退出");
             System.out.print("请选择菜单编号：");
@@ -46,13 +46,13 @@ public class ProductSys {
                     String adminName = input.next();
                     System.out.print("请输入新密码：");
                     String adminPassword = input.next();
-                    boolean notDuplicateName = adinService.checkDuplicateName(new Admin(adminName));
-                    if (notDuplicateName) {
+                    boolean isDuplicateName = adinService.checkDuplicateName(new Admin(adminName));
+                    if (isDuplicateName) {
+                        System.out.println("用户名已被注册");
+                    } else {
                         int result = adinService.register(new Admin(adminName, adminPassword));
                         if (result != 0)
                             System.out.println("注册成功");
-                    } else {
-                        System.out.println("用户名已被注册");
                     }
                     break;
                 }
@@ -78,13 +78,11 @@ public class ProductSys {
                     categoryMenu();
                     break;
                 case 3:
-                    System.out.println("供应商管理");
+                    providerMenu();
                     break;
                 case 4:
-                    flag = false;
                     System.out.println("退出");
                     return;
-//                    break;
                 default:
                     System.out.println("菜单编号不存在");
                     break;
@@ -147,7 +145,7 @@ public class ProductSys {
                     for (Product product : products) {
                         System.out.printf("%d.%s ", product.getProductId(), product.getProductName());
                     }
-                    System.out.print("请输入修改的商品的编号：");
+                    System.out.print("\n请输入修改的商品的编号：");
                     int productId = input.nextInt();
                     Product oldProduct = new Product();
                     boolean flag = false;
@@ -210,7 +208,7 @@ public class ProductSys {
                     for (Product product : products) {
                         System.out.printf("%d.%s ", product.getProductId(), product.getProductName());
                     }
-                    System.out.print("请输入商品编号：");
+                    System.out.print("\n请输入商品编号：");
                     int productId = input.nextInt();
                     boolean flag = false;
                     for (Product product : products) {
@@ -273,7 +271,7 @@ public class ProductSys {
                     for (Category category : categories) {
                         System.out.printf("%d.%s ", category.getCategoryId(), category.getCategoryName());
                     }
-                    System.out.print("请输入修改的分类的编号：");
+                    System.out.print("\n请输入修改的分类的编号：");
                     int categoryId = input.nextInt();
                     Category oldCategory = new Category();
                     boolean flag = false;
@@ -336,6 +334,177 @@ public class ProductSys {
                     System.out.println("回到一级菜单");
                     break;
                 }
+                default:
+                    System.out.println("菜单编号不存在");
+                    break;
+            }
+        }
+    }
+
+    private static void providerMenu() {
+        boolean providerFlag = true;
+        while (providerFlag) {
+            System.out.println("1.列表查询 2.新增 3.修改 4.删除 5.回到一级菜单");
+            System.out.print("请选择供应商管理菜单编号：");
+            int menuId = input.nextInt();
+            switch (menuId) {
+                // 1.列表查询
+                case 1: {
+                    showProviderList();
+                    break;
+                }
+                // 2.增加
+                case 2: {
+                    System.out.print("请输入供应商名：");
+                    String providerName = input.next();
+                    System.out.print("请输入供应商地址：");
+                    String providerAddress = input.next();
+                    System.out.print("请输入供应商手机号：");
+                    String providerTel = input.next();
+                    System.out.print("请输入供应商账户：");
+                    String providerAccount = input.next();
+                    System.out.print("请输入供应商电子邮箱：");
+                    String providerEmail = input.next();
+                    int res = providerService.addProvider(new Provider(providerName, providerAddress, providerTel, providerAccount, providerEmail));
+                    if (res != 0)
+                        System.out.println("添加分类成功。");
+                    break;
+                }
+                // 3.修改
+                case 3: {
+                    providers = providerService.list();
+                    for (Provider provider : providers) {
+                        System.out.printf("%d.%s ", provider.getProviderId(), provider.getProviderName());
+                    }
+                    System.out.print("\n请输入修改的供应商的编号：");
+                    int providerId = input.nextInt();
+                    Provider oldProvider = new Provider();
+                    boolean flag = false;
+                    for (Provider provider : providers) {
+                        if (provider.getProviderId() == providerId) {
+                            flag = true;
+                            oldProvider = provider;
+                            break;
+                        }
+                    }
+                    if (!flag) {
+                        System.out.println("供应商编号不存在");
+                    } else {
+                        System.out.printf("供应商名称：%s 供应商地址：%s 供应商手机号：%s 供应商账号：%s 供应商电子邮箱：%s\n",
+                                oldProvider.getProviderName(),
+                                oldProvider.getProviderAddress(),
+                                oldProvider.getProviderTel(),
+                                oldProvider.getProviderAccount(),
+                                oldProvider.getProviderEmail());
+                        System.out.print("请输入供应商名称：");
+                        String providerName = input.next();
+                        System.out.print("请输入供应商地址：");
+                        String providerAddress = input.next();
+                        System.out.print("请输入供应商手机号：");
+                        String providerTel = input.next();
+                        System.out.print("请输入供应商账号：");
+                        String providerAccount = input.next();
+                        System.out.print("请输入供应商电子邮箱：");
+                        String providerEmail = input.next();
+                        Provider newProvider = new Provider(providerName, providerAddress, providerTel, providerAccount, providerEmail);
+                        newProvider.setProviderId(oldProvider.getProviderId());
+                        int result = providerService.updateProvider(newProvider);
+                        if (result > 0) {
+                            System.out.println("供应商修改完成完成。");
+                        }
+                    }
+                    break;
+                }
+                // 4.删除
+                case 4: {
+                    providers = providerService.list();
+                    for (Provider provider : providers) {
+                        System.out.printf("%d.%s ", provider.getProviderId(), provider.getProviderName());
+                    }
+                    System.out.print("请输入供应商编号：");
+                    int providerId = input.nextInt();
+                    boolean flag = false;
+                    for (Provider provider : providers) {
+                        if (provider.getProviderId() == providerId) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag) {
+                        System.out.println("供应商编号不存在");
+                    } else {
+                        System.out.println("是否删除 y/n");
+                        String confirm = input.next();
+                        if ("y".equals(confirm) || "Y".equals(confirm)) {
+                            int result = providerService.delete(new Provider().setProviderId(providerId));
+                            System.out.println(result == 1 ? "已删除" : "未删除");
+                        }
+                    }
+                    break;
+                }
+                case 5: {
+                    providerFlag = false;
+                    System.out.println("回到一级菜单");
+                    break;
+                }
+                default:
+                    System.out.println("菜单编号不存在");
+                    break;
+            }
+        }
+    }
+
+    private static void showProviderList() {
+        int pageNum = 1, size = 5, rowCount = providerService.getTotal();
+        int pageCount = (rowCount + size - 1) / size;
+        boolean flag = true;
+        while (flag) {
+            providers = providerService.list(new Page(pageNum, size));
+            System.out.println("\t编号\t供应商名称\t地址\t手机号\t账号\t电子邮箱");
+//            providers.sort(Comparator.comparingInt(Provider::getProviderId));
+            for (Provider provider : providers) {
+                System.out.printf("\t%d\t%s\t%s\t%s\t%s\t%s\n",
+                        provider.getProviderId(),
+                        provider.getProviderName(),
+                        provider.getProviderAddress(),
+                        provider.getProviderTel(),
+                        provider.getProviderAccount(),
+                        provider.getProviderEmail()
+                );
+            }
+            System.out.println("1.首页 2.上一页 3.下一页 4.尾页 5.回到上级菜单");
+            System.out.printf("总条数：%d 总页数：%d 当前页数：%d\n", rowCount, pageCount, pageNum);
+            System.out.print("请选择分页菜单编号：");
+            int menuId = input.nextInt();
+            switch (menuId) {
+                case 1:
+                    pageNum = 1;
+                    System.out.println("1.首页");
+                    break;
+                case 2:
+                    System.out.println("2.上一页");
+                    if (pageNum > 1) {
+                        pageNum--;
+                    } else {
+                        System.out.println("已显示首页");
+                    }
+                    break;
+                case 3:
+                    System.out.println("3.下一页");
+                    if (pageNum < pageCount) {
+                        pageNum++;
+                    } else {
+                        System.out.println("已显示尾页");
+                    }
+                    break;
+                case 4:
+                    System.out.println("4.尾页");
+                    pageNum = pageCount;
+                    break;
+                case 5:
+                    flag = false;
+                    System.out.println("回到一级菜单");
+                    break;
                 default:
                     System.out.println("菜单编号不存在");
                     break;
