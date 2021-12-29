@@ -39,6 +39,8 @@ public class ProductDaoImpl implements ProductDao {
                 product.setPurchasePrice(rs.getDouble("purchase_price"));
                 product.setSalesPrice(rs.getDouble("sales_price"));
                 product.setQuantity(rs.getInt("quantity"));
+                product.setCategoryId(rs.getInt("category_id"));
+                product.setProviderId(rs.getInt("provider_id"));
                 product.setCategoryName(rs.getString("category_name"));
                 product.setProviderName(rs.getString("provider_name"));
                 products.add(product);

@@ -1,13 +1,19 @@
 package com;
 
 import com.model.*;
-import com.service.*;
+import com.service.AdminService;
+import com.service.CategoryService;
+import com.service.ProductService;
+import com.service.ProviderService;
 import com.service.impl.AdminServiceImpl;
 import com.service.impl.CategoryServiceImpl;
 import com.service.impl.ProductServiceImpl;
 import com.service.impl.ProviderServiceImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
 
 public class ProductSys {
     private static final Scanner input = new Scanner(System.in);
@@ -65,8 +71,7 @@ public class ProductSys {
                     break;
             }
         }
-        boolean flag = true;
-        while (flag) {
+        while (true) {
             System.out.println("1.商品管理 2.分类管理 3.供应商管理 4.退出");
             System.out.print("请选择菜单编号：");
             int menuId = input.nextInt();
@@ -81,14 +86,13 @@ public class ProductSys {
                     providerMenu();
                     break;
                 case 4:
-                    System.out.println("退出");
+                    System.out.println("谢谢使用");
                     return;
                 default:
                     System.out.println("菜单编号不存在");
                     break;
             }
         }
-        System.out.println("谢谢使用");
     }
 
     private static void productMenu() {
@@ -225,7 +229,6 @@ public class ProductSys {
                         if ("y".equals(confirm) || "Y".equals(confirm)) {
                             int result = productService.delete(new Product().setProductId(productId));
                             System.out.println(result == 1 ? "已删除" : "未删除");
-//                            products = productService.list();
                         }
                     }
                     break;
@@ -323,7 +326,19 @@ public class ProductSys {
                         System.out.println("是否删除 y/n");
                         String confirm = input.next();
                         if ("y".equals(confirm) || "Y".equals(confirm)) {
-                            int result = categoryService.delete(new Category().setCategoryId(categoryId));
+                            products = productService.list();
+                            boolean existForeignRelation = false;
+                            for (Product product : products) {
+                                if (product.getCategoryId() == categoryId) {
+                                    System.out.println("此分类存在对应的商品，请移除对应商品后重试");
+                                    existForeignRelation = true;
+                                    break;
+                                }
+                            }
+                            int result = 0;
+                            if (!existForeignRelation) {
+                                result = categoryService.delete(new Category().setCategoryId(categoryId));
+                            }
                             System.out.println(result == 1 ? "已删除" : "未删除");
                         }
                     }
@@ -436,7 +451,19 @@ public class ProductSys {
                         System.out.println("是否删除 y/n");
                         String confirm = input.next();
                         if ("y".equals(confirm) || "Y".equals(confirm)) {
-                            int result = providerService.delete(new Provider().setProviderId(providerId));
+                            products = productService.list();
+                            boolean existForeignRelation = false;
+                            for (Product product : products) {
+                                if (product.getProviderId() == providerId) {
+                                    System.out.println("此供应商存在对应的商品，请移除对应商品后重试");
+                                    existForeignRelation = true;
+                                    break;
+                                }
+                            }
+                            int result = 0;
+                            if (!existForeignRelation) {
+                                result = providerService.delete(new Provider().setProviderId(providerId));
+                            }
                             System.out.println(result == 1 ? "已删除" : "未删除");
                         }
                     }

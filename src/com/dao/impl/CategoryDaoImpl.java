@@ -30,7 +30,7 @@ public class CategoryDaoImpl implements CategoryDao {
     @Override
     public int delete(Category category) {
         int result = 0;
-        String sql = "delete from categories where product_id=?";
+        String sql = "delete from categories where category_id=?";
         Object[] objects = {category.getCategoryId()};
         try {
             result = dbUtil.executeUpdate(sql, objects);
